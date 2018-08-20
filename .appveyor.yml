@@ -17,15 +17,16 @@ install:
   # For all other archs (including, say, arm), use the x64 python.
   - ps: (new-object net.webclient).DownloadFile('https://www.dropbox.com/s/cyghxjrvgplu7sy/ninja.exe?dl=1', 'C:\projects\razer-test\ninja.exe')
   - cmd: if %arch%==x86 (set MESON_PYTHON_PATH=C:\python37) else (set MESON_PYTHON_PATH=C:\python37-x64)
+  - cmd: "SET PATH=%cd%;%MESON_PYTHON_PATH%;%MESON_PYTHON_PATH%\\Scripts;%PATH%"
   - cmd: echo Using Python at %MESON_PYTHON_PATH%
-  - cmd: "%MESON_PYTHON_PATH%\\Scripts\\pip install meson"
+  - cmd: pip install meson
   - cmd: if %compiler%==msvc2010 ( call "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat" %arch% )
   - cmd: if %compiler%==msvc2015 ( call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %arch% )
 
 build_script:
   - cmd: echo Building on %arch% with %compiler%
-  - cmd: PATH=%cd%;%MESON_PYTHON_PATH%\\Scripts;%PATH%; && meson --backend=ninja builddir
-  - cmd: PATH=%cd%;%MESON_PYTHON_PATH%;%PATH%; && ninja -C builddir
+  - cmd: meson --backend=ninja builddir
+  - cmd: ninja -C builddir
 
 test_script:
-  - cmd: PATH=%cd%;%MESON_PYTHON_PATH%;%PATH%; && ninja -C builddir test
+  - cmd: ninja -C builddir test
