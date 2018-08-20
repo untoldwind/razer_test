@@ -1,6 +1,6 @@
 project('razer_test', 'cpp',
         version : '0.0.1',
-        default_options : ['cpp_std=c++11'])
+        default_options : ['cpp_std=c++14'])
 
 conf_data = configuration_data()
 conf_data.set('version', meson.project_version())
