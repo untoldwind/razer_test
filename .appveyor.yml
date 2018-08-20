@@ -27,7 +27,7 @@ install:
   - cmd: git clone https://github.com/signal11/hidapi.git "C:\projects\hidapi"
   - cmd: git -C "C:\projects\hidapi" fetch origin pull/324/head
   - cmd: git -C "C:\projects\hidapi" cherry-pick -n b00982f83864ddb6a21c5d28c2134dda6f359d47
-  - cmd: msbuild "C:\projects\hidapi\windows\hidapi.sln" /p:Configuration=Debug /p:Platform="Any CPU"
+  - cmd: msbuild "C:\projects\hidapi\windows\hidapi.sln"
   - cmd: dir "C:\projects\hidapi\windows"
   - cmd: dir "C:\projects\hidapi"
 
