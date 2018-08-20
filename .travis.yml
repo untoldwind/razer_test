@@ -8,17 +8,17 @@ compiler:
   - gcc
   - clang
 
-addons:
-  apt:
-    packages:
-      - meson
-      - qt5-default
+services:
+  - docker
 
 before_install:
-#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update          ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install meson qt5-base; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install meson qt; fi
 
 
 script:
-  - meson build
-  - ninja -C build
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then echo FROM ubuntu:latest > Dockerfile; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then echo ADD . /root >> Dockerfile; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker build -t withgit .; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker run withgit /bin/sh -c "cd /root && TRAVIS=true CC=$CC CXX=$CXX meson builddir && ninja -C builddir test"; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then meson builddir && ninja -C builddir test; fi
