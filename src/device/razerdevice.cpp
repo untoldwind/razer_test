@@ -19,6 +19,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <QThread>
+
 #include "razerdevice.h"
 
 RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QVector<RazerDeviceQuirks> quirks)
@@ -81,7 +83,7 @@ int RazerDevice::sendReport(razer_report request_report, razer_report *response_
         }
 
         // Wait a bit
-        usleep(800);
+        QThread::usleep(800);
 
         // Read a Feature Report from the device
         res_buf[0] = 0x00; // report number
