@@ -8,6 +8,17 @@ compiler:
   - gcc
   - clang
 
+env:
+  - LIBC=glibc
+  - LIBC=musl
+
+matrix:
+  exclude:
+  - os: osx
+    compiler: gcc
+  - os: osx
+    env: LIBC=musl
+
 services:
   - docker
 
@@ -17,9 +28,12 @@ before_install:
 
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then echo 'FROM ubuntu:latest' > Dockerfile; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$LIBC" == "glibc" ]]; then echo 'FROM ubuntu:latest' > Dockerfile; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$LIBC" == "musl" ]]; then echo 'FROM alpine:latest' > Dockerfile; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then echo 'ADD . /root' >> Dockerfile; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then echo 'RUN apt-get update && apt-get install -y meson qt5-default g++ clang pkg-config libhidapi-dev libboost-dev' >> Dockerfile; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$LIBC" == "glibc" ]]; then echo 'RUN apt-get update && apt-get install -y meson qt5-default g++ clang pkg-config libhidapi-dev libboost-dev' >> Dockerfile; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$LIBC" == "musl" ]]; then echo 'RUN echo "@testing http://dl-4.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories' >> Dockerfile; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$LIBC" == "musl" ]]; then echo 'RUN apk install meson qt5-qtbase-dev g++ clang pkgconf hidapi-dev@testing boost-dev' >> Dockerfile; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker build -t myimage .; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker run myimage /bin/sh -c "cd /root && TRAVIS=true CC=$CC CXX=$CXX meson builddir && ninja -C builddir test"; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/qt/bin:$PATH"; fi
