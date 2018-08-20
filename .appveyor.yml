@@ -21,11 +21,10 @@ install:
   - cmd: "%MESON_PYTHON_PATH%\\Scripts\\pip install meson"
   - cmd: if %compiler%==msvc2010 ( call "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat" %arch% )
   - cmd: if %compiler%==msvc2015 ( call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %arch% )
-  - cmd: dir "%MESON_PYTHON_PATH%\\Scripts"
 
 build_script:
   - cmd: echo Building on %arch% with %compiler%
-  - cmd: PATH=%cd%;%MESON_PYTHON_PATH%;%PATH%; && python meson.py --backend=ninja builddir
+  - cmd: PATH=%cd%;%MESON_PYTHON_PATH%\\Scripts;%PATH%; && meson --backend=ninja builddir
   - cmd: PATH=%cd%;%MESON_PYTHON_PATH%;%PATH%; && ninja -C builddir
 
 test_script:
