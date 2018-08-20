@@ -16,6 +16,7 @@ install:
   # Use the x86 python only when building for x86 for the cpython tests.
   # For all other archs (including, say, arm), use the x64 python.
   - ps: (new-object net.webclient).DownloadFile('https://www.dropbox.com/s/cyghxjrvgplu7sy/ninja.exe?dl=1', 'C:\projects\razer-test\ninja.exe')
+  - ps: (new-object net.webclient).DownloadFile('http://nirbheek.in/files/binaries/pkg-config/win32/pkg-config.exe', 'C:\projects\razer-test\pkg-config.exe')
   - cmd: if %arch%==x86 (set MESON_PYTHON_PATH=C:\python37) else (set MESON_PYTHON_PATH=C:\python37-x64)
   - cmd: "SET PATH=%cd%;%MESON_PYTHON_PATH%;%MESON_PYTHON_PATH%\\Scripts;%PATH%"
   - cmd: echo Using Python at %MESON_PYTHON_PATH%
