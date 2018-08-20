@@ -25,7 +25,7 @@ install:
   - cmd: if %compiler%==msvc2015 ( call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %arch% )
   # Build hidapi dependency
   - cmd: git clone https://github.com/signal11/hidapi.git "C:\projects\hidapi"
-  - cmd: msbuild "C:\projects\hidapi\windows\hidapi.sln"
+  - cmd: msbuild "C:\projects\hidapi\windows\hidapi.sln" /p:Configuration=Debug /p:Platform="Any CPU"
   - cmd: dir "C:\projects\hidapi\windows"
   - cmd: dir "C:\projects\hidapi"
 
