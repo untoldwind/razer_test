@@ -28,13 +28,6 @@ install:
 #  - cmd: if %compiler%==msvc2010 ( call "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat" %arch% )
 #  - cmd: if %compiler%==msvc2015 ( call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %arch% )
 #  - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-  # Build hidapi dependency
-  - cmd: git clone https://github.com/signal11/hidapi.git "C:\projects\hidapi"
-  - cmd: git -C "C:\projects\hidapi" fetch https://github.com/z3ntu/hidapi.git meson
-  - cmd: git -C "C:\projects\hidapi" checkout 112c24579f699b12f999e8c2917908934fda0358
-  - cmd: meson --backend=ninja "C:\projects\hidapi\windows" builddir-hidapi
-  - cmd: ninja -C builddir-hidapi
-  - cmd: dir builddir-hidapi
 
 build_script:
   - cmd: echo Building on %arch% with %compiler%
