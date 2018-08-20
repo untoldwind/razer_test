@@ -30,7 +30,7 @@ install:
   - cmd: git clone https://github.com/signal11/hidapi.git "C:\projects\hidapi"
   - cmd: git -C "C:\projects\hidapi" fetch https://github.com/z3ntu/hidapi.git meson
   - cmd: git -C "C:\projects\hidapi" checkout 112c24579f699b12f999e8c2917908934fda0358
-  - cmd: meson --backend=ninja "C:\projects\hidapi" builddir-hidapi
+  - cmd: meson --backend=ninja "C:\projects\hidapi\windows" builddir-hidapi
   - cmd: ninja -C builddir-hidapi
   - cmd: dir builddir-hidapi
 
