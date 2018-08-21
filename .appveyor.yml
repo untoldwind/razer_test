@@ -8,7 +8,7 @@ environment:
 #      compiler: msvc2015
 #    - arch: x64
 #      compiler: msvc2015
-    - arch: x86
+    - arch: x64
       compiler: msvc2017
 
 platform:
@@ -33,6 +33,8 @@ build_script:
   - cmd: echo Building on %arch% with %compiler%
   - cmd: meson --backend=ninja builddir
   - cmd: ninja -C builddir -v
+  - cmd: mkdir builddir/bindeps/
+  - cmd: cp C:/Qt/5.11/msvc2017_64/lib/Qt5Cored.dll C:/Qt/5.11/msvc2017_64/lib/Qt5DBusd.dll builddir/bindeps/
 
 test_script:
   - cmd: ninja -C builddir test
@@ -40,5 +42,4 @@ test_script:
 artifacts:
   - path: builddir/razer_test_demo.exe
   - path: builddir/subprojects/hidapi/hidapi.dll
-  - path: ../../Qt/5.11/msvc2017_64/lib/Qt5Cored.dll
-  - path: ../../Qt/5.11/msvc2017_64/lib/Qt5DBusd.dll
+  - path: builddir/bindeps/*.dll
