@@ -35,7 +35,7 @@ build_script:
   - cmd: meson --backend=ninja builddir
   - cmd: ninja -C builddir -v
   - cmd: mkdir builddir\bindeps
-  - cmd: cp C:/Qt/5.11/msvc2017_64/lib/Qt5Cored.dll C:/Qt/5.11/msvc2017_64/lib/Qt5DBusd.dll builddir/bindeps/
+  - cmd: cp C:/Qt/5.11/msvc2017_64/bin/Qt5Cored.dll C:/Qt/5.11/msvc2017_64/bin/Qt5DBusd.dll builddir/bindeps/
 
 test_script:
   - cmd: ninja -C builddir test
