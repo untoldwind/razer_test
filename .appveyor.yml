@@ -36,3 +36,7 @@ build_script:
 
 test_script:
   - cmd: ninja -C builddir test
+
+artifacts:
+  - path: builddir/razer_test_demo.exe
+  - path: subprojects/hidapi/hidapi.dll
