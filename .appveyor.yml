@@ -15,32 +15,31 @@ platform:
   - x64
 
 install:
-  # Use the x86 python only when building for x86 for the cpython tests.
-  # For all other archs (including, say, arm), use the x64 python.
+  # Download ninja & pkg-config
   - ps: (new-object net.webclient).DownloadFile('https://www.dropbox.com/s/cyghxjrvgplu7sy/ninja.exe?dl=1', 'C:\projects\razer-test\ninja.exe')
   - ps: (new-object net.webclient).DownloadFile('http://nirbheek.in/files/binaries/pkg-config/win32/pkg-config.exe', 'C:\projects\razer-test\pkg-config.exe')
-  - cmd: if %arch%==x86 (set MESON_PYTHON_PATH=C:\python37) else (set MESON_PYTHON_PATH=C:\python37-x64)
+  - cmd: if %arch%==x86 (set PYTHON_ROOT=C:\python37) else (set PYTHON_ROOT=C:\python37-x64)
   - cmd: set BOOST_ROOT=C:\Libraries\boost_1_67_0
-  - cmd: set PATH=C:\Qt\5.11\msvc2017_64\bin;%PATH%
-  - cmd: "SET PATH=%cd%;%MESON_PYTHON_PATH%;%MESON_PYTHON_PATH%\\Scripts;%PATH%"
-  - cmd: echo Using Python at %MESON_PYTHON_PATH%
+  - cmd: set QT_ROOT=C:\Qt\5.11\msvc2017_64
+  - cmd: echo Using Python at %PYTHON_ROOT%
+  - cmd: echo Using Boost at %BOOST_ROOT%
+  - cmd: echo Using Qt at %QT_ROOT%
+  - cmd: set PATH=%cd%;%QT_ROOT%\bin;%PYTHON_ROOT%;%PYTHON_ROOT%\Scripts;%PATH%
   - cmd: pip install meson
-#  - cmd: if %compiler%==msvc2010 ( call "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat" %arch% )
-#  - cmd: if %compiler%==msvc2015 ( call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %arch% )
-  - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - cmd: if %compiler%==msvc2010 ( call "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat" %arch% )
+  - cmd: if %compiler%==msvc2015 ( call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %arch% )
+  - cmd: if %compiler%==msvc2017 ( call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" %arch% )
 
 build_script:
   - cmd: echo Building on %arch% with %compiler%
   - cmd: meson --backend=ninja builddir
   - cmd: ninja -C builddir -v
-  - cmd: mkdir builddir\bindeps
-  - cmd: cp C:/Qt/5.11/msvc2017_64/bin/Qt5Cored.dll C:/Qt/5.11/msvc2017_64/bin/Qt5DBusd.dll builddir/bindeps/
 
 test_script:
   - cmd: ninja -C builddir test
 
 after_build:
-  - cmd: 7z a razer_test.zip %APPVEYOR_BUILD_FOLDER%\builddir\razer_test_demo.exe %APPVEYOR_BUILD_FOLDER%\builddir\subprojects\hidapi\hidapi.dll C:/Qt/5.11/msvc2017_64/bin/Qt5Cored.dll C:/Qt/5.11/msvc2017_64/bin/Qt5DBusd.dll
+  - cmd: 7z a razer_test.zip %APPVEYOR_BUILD_FOLDER%\builddir\razer_test_demo.exe %APPVEYOR_BUILD_FOLDER%\builddir\subprojects\hidapi\hidapi.dll %QT_ROOT%\bin\Qt5Cored.dll %QT_ROOT%\bin\Qt5DBusd.dll
 
 artifacts:
   - path: razer_test.zip
