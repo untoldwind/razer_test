@@ -39,4 +39,4 @@ test_script:
 
 artifacts:
   - path: builddir/razer_test_demo.exe
-  - path: subprojects/hidapi/hidapi.dll
+  - path: builddir/subprojects/hidapi/hidapi.dll
