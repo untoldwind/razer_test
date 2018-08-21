@@ -40,5 +40,5 @@ test_script:
 artifacts:
   - path: builddir/razer_test_demo.exe
   - path: builddir/subprojects/hidapi/hidapi.dll
-  - path: C:/Qt/5.11/msvc2017_64/lib/Qt5Cored.dll
-  - path: C:/Qt/5.11/msvc2017_64/lib/Qt5DBusd.dll
+  - path: ../../Qt/5.11/msvc2017_64/lib/Qt5Cored.dll
+  - path: ../../Qt/5.11/msvc2017_64/lib/Qt5DBusd.dll
