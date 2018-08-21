@@ -28,7 +28,6 @@ install:
 #  - cmd: if %compiler%==msvc2010 ( call "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat" %arch% )
 #  - cmd: if %compiler%==msvc2015 ( call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %arch% )
   - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - cmd: dir C:\Qt\5.11\msvc2017_64\bin
 
 build_script:
   - cmd: echo Building on %arch% with %compiler%
@@ -40,7 +39,11 @@ build_script:
 test_script:
   - cmd: ninja -C builddir test
 
+after_build:
+  - cmd: 7z a razer_test.zip %APPVEYOR_BUILD_FOLDER%\builddir\razer_test_demo.exe %APPVEYOR_BUILD_FOLDER%\builddir\subprojects\hidapi\hidapi.dll C:/Qt/5.11/msvc2017_64/bin/Qt5Cored.dll C:/Qt/5.11/msvc2017_64/bin/Qt5DBusd.dll
+
 artifacts:
-  - path: builddir/razer_test_demo.exe
-  - path: builddir/subprojects/hidapi/hidapi.dll
-  - path: builddir/bindeps/*.dll
+  - path: razer_test.zip
+#  - path: builddir/razer_test_demo.exe
+#  - path: builddir/subprojects/hidapi/hidapi.dll
+#  - path: builddir/bindeps/*.dll
